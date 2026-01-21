@@ -1,0 +1,290 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[latin1]{inputenc}			% Encoding
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{multirow,multicol}
+\usepackage{pifont,hyperref,lastpage,fancyhdr,movie15,float}
+%\usepackage{eqnarray}
+\usepackage{fancyvrb}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage[total={170mm,257mm}, left=20mm, top=20mm]{geometry}
+
+
+\title{Comprehensive Interpretation of Vitamin C Effect on Tooth Growth in Guinea Pigs}
+\author{Statistical Analysis Report}
+\date{}
+
+
+\begin{document}
+	\maketitle
+	\includegraphics[width=16cm,height=10cm]{Figures/guineapig.jpg}
+	%\includegraphics[width=8cm,height=6cm]{Figures/pig.jpg}
+	\section*{Main Question: Does Vitamin C have significant impact than Orange Juice on Tooth growth in Guinea Pigs?}
+	
+	\section*{Executive Summary}
+	The analysis reveals that \textbf{Orange Juice (OJ)} demonstrates superior effectiveness compared to \textbf{pure Vitamin C (VC)} at lower and medium doses, while both delivery methods achieve comparable results at the highest dose level. A significant \textbf{interaction effect} exists between delivery method and dose level.
+	
+	\section{Research Question Interpretation}
+	\textbf{Primary Question:} ``Does Vitamin C have significant impact than Orange Juice on Tooth growth in Guinea Pigs?''
+	
+	\textbf{Answer:} \textbf{No} -- contrary to the initial hypothesis, Orange Juice shows \textbf{better effectiveness} than pure Vitamin C (ascorbic acid) at lower and medium doses, while both methods are equally effective at the highest dose.
+	
+	\section{Descriptive Statistics Interpretation}
+	
+	\subsection{Overall Sample Characteristics}
+	\begin{itemize}
+		\item \textbf{Sample Size:} 60 guinea pigs
+		\item \textbf{Mean Tooth Length:} 18.81 mm (Range: 4.2--33.9 mm)
+		\item \textbf{Standard Deviation:} 7.65 mm (indicating moderate variability)
+	\end{itemize}
+	
+	\subsection{By Supplement Type}
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{lccc}
+			\toprule
+			\textbf{Supplement} & \textbf{Mean (mm)} & \textbf{Std Dev (mm)} & \textbf{Difference} \\
+			\midrule
+			Orange Juice (OJ) & 20.66 & 6.61 & +3.70 mm \\
+			Vitamin C (VC) & 16.96 & 8.27 & \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\textbf{Interpretation:} Orange juice produces \textbf{longer teeth on average} (20.66 mm vs 16.96 mm) -- a clinically relevant difference of 3.70 mm.
+	
+	\subsection{By Dose Level}
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{lcc}
+			\toprule
+			\textbf{Dose Level} & \textbf{Mean Tooth Length (mm)} & \textbf{Pattern} \\
+			\midrule
+			0.5 mg/day & 10.61 & Baseline \\
+			1.0 mg/day & 19.74 & +86\% increase \\
+			2.0 mg/day & 26.10 & +146\% increase \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\textbf{Interpretation:} Clear \textbf{dose-response relationship} -- higher doses produce substantially longer teeth.
+	
+	\subsection{Combined Analysis (Most Important Findings)}
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{lccc}
+			\toprule
+			\textbf{Group} & \textbf{Mean (mm)} & \textbf{Difference (mm)} & \textbf{Advantage} \\
+			\midrule
+			OJ-0.5 mg & 13.23 & +5.25 & \textbf{OJ Superior} \\
+			VC-0.5 mg & 7.98 & & \\
+			\midrule
+			OJ-1.0 mg & 22.70 & +5.93 & \textbf{OJ Superior} \\
+			VC-1.0 mg & 16.77 & & \\
+			\midrule
+			OJ-2.0 mg & 26.06 & -0.08 & \textbf{Equal Effectiveness} \\
+			VC-2.0 mg & 26.14 & & \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\textbf{Key Insight:} Orange juice is \textbf{substantially more effective at low and medium doses}, but this advantage disappears at the highest dose.
+	
+	\section{Data Visualization Interpretation}
+	\includegraphics[width=18cm,height=10cm]{Figures/descriptiveplots}
+	\subsection{Boxplot Analysis}
+	\begin{itemize}
+		\item \textbf{Clear dose effect:} Box positions shift upward systematically with increasing dose
+		\item \textbf{OJ advantage:} At 0.5 mg and 1.0 mg, OJ boxes are positioned higher than VC boxes
+		\item \textbf{Equal performance:} At 2.0 mg, OJ and VC boxes overlap completely
+		\item \textbf{Variability:} VC groups show slightly more variability (longer whiskers)
+	\end{itemize}
+	
+	\subsection{Bar Plots with Confidence Intervals}
+	\begin{itemize}
+		\item \textbf{Non-overlapping CIs} at 0.5 mg and 1.0 mg indicate \textbf{statistically significant differences}
+		\item \textbf{Overlapping CIs} at 2.0 mg indicate \textbf{no significant difference}
+	\end{itemize}
+	
+	\subsection{Point Plot Interpretation}
+	\begin{itemize}
+		\item Shows the \textbf{interaction pattern} clearly: OJ starts higher but VC ``catches up'' at the highest dose
+		\item \textbf{Steeper slope for VC} indicates stronger dose response for pure ascorbic acid
+	\end{itemize}
+	
+	\section{Statistical Assumptions Validation}
+	
+	\subsection{Normality Tests (Shapiro-Wilk)}
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{lccc}
+			\toprule
+			\textbf{Group} & \textbf{W-statistic} & \textbf{p-value} & \textbf{Normality} \\
+			\midrule
+			OJ-0.5 mg & 0.9178 & 0.3489 & Normal \\
+			OJ-1.0 mg & 0.9423 & 0.5958 & Normal \\
+			OJ-2.0 mg & 0.9460 & 0.6448 & Normal \\
+			VC-0.5 mg & 0.9658 & 0.8261 & Normal \\
+			VC-1.0 mg & 0.9331 & 0.5049 & Normal \\
+			VC-2.0 mg & 0.8285 & 0.0377 & Not Normal \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\textbf{Interpretation:} 5 out of 6 groups are normally distributed. The VC-2.0 mg group shows slight deviation, but parametric tests remain robust given the context.
+	
+	\subsection{Homogeneity of Variance}
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{lc}
+			\toprule
+			\textbf{Test} & \textbf{Results} \\
+			\midrule
+			Between supplements: & $F = 0.7289$, $p = 0.3968$ \\
+			Between doses: & $F = 0.6457$, $p = 0.5281$ \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\textbf{Interpretation:} \textbf{Variances are equal} across groups -- satisfying key assumptions for ANOVA and t-tests.
+	
+	\section{Inferential Statistics Interpretation}
+	
+	\subsection{Confidence Intervals Analysis}
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{lcc}
+			\toprule
+			\textbf{Group} & \textbf{95\% CI (mm)} & \textbf{Statistical Significance} \\
+			\midrule
+			OJ-0.5 mg & (10.20, 16.26) & \textbf{Significant} \\
+			VC-0.5 mg & (6.10, 9.86) & (No overlap) \\
+			\midrule
+			OJ-1.0 mg & (20.00, 25.40) & \textbf{Significant} \\
+			VC-1.0 mg & (15.05, 18.49) & (No overlap) \\
+			\midrule
+			OJ-2.0 mg & (24.18, 27.94) & \textbf{Not Significant} \\
+			VC-2.0 mg & (22.87, 29.41) & (Substantial overlap) \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\subsection{T-Test Results Summary}
+	
+	\textbf{Overall Comparison (Ignoring Dose):}
+	\[
+	t(58) = 1.9153,\ p = 0.0604\ \text{(Borderline non-significant)}
+	\]
+	
+	\textbf{Dose-Specific Comparisons:}
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{lccc}
+			\toprule
+			\textbf{Comparison} & \textbf{t-statistic} & \textbf{p-value} & \textbf{Significance} \\
+			\midrule
+			0.5 mg: OJ vs VC & $t(18) = 3.1697$ & 0.0052 & ** \\
+			1.0 mg: OJ vs VC & $t(18) = 4.0328$ & 0.0008 & *** \\
+			2.0 mg: OJ vs VC & $t(18) = -0.0461$ & 0.9638 & ns \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\textbf{Key Statistical Findings:}
+	\begin{enumerate}
+		\item \textbf{At 0.5 mg:} OJ is significantly better than VC ($p < 0.01$)
+		\item \textbf{At 1.0 mg:} OJ is significantly better than VC ($p < 0.001$)
+		\item \textbf{At 2.0 mg:} No significant difference between OJ and VC ($p = 0.964$)
+	\end{enumerate}
+	
+	\section{Biological and Practical Interpretation}
+	
+	\subsection{Mechanistic Explanations}
+	
+	\textbf{Why Orange Juice is More Effective at Lower Doses:}
+	\begin{itemize}
+		\item \textbf{Enhanced Bioavailability:} Orange juice contains bioflavonoids that enhance vitamin C absorption
+		\item \textbf{Synergistic Effects:} Other nutrients in orange juice work cooperatively with vitamin C
+		\item \textbf{Gradual Release:} Natural food matrix provides sustained nutrient release
+	\end{itemize}
+	
+	\textbf{Why VC Catches Up at High Doses:}
+	\begin{itemize}
+		\item \textbf{Saturation Effect:} Absorption mechanisms become saturated at high concentrations
+		\item \textbf{Overwhelming Concentration:} Pure VC at high doses overcomes bioavailability limitations
+		\item \textbf{Ceiling Effect:} Biological response reaches maximum achievable level
+	\end{itemize}
+	
+	\subsection{Dose-Response Patterns}
+	\begin{itemize}
+		\item \textbf{OJ:} Excellent effectiveness at low doses with diminishing returns
+		\item \textbf{VC:} Poor effectiveness at low doses but strong response curve
+		\item \textbf{Crossover Point:} Between 1.0 mg and 2.0 mg doses
+	\end{itemize}
+	
+	\section{Statistical Conclusions}
+	
+	\subsection{Primary Conclusion}
+	\textbf{``The effect of vitamin C delivery method depends on the dose level''} -- demonstrating a classic \textbf{interaction effect}.
+	
+	\subsection{Specific Conclusions}
+	\begin{enumerate}
+		\item \textbf{Low-dose (0.5 mg):} Orange juice is \textbf{significantly better}
+		\item \textbf{Medium-dose (1.0 mg):} Orange juice is \textbf{significantly better}
+		\item \textbf{High-dose (2.0 mg):} Both methods are \textbf{equally effective}
+	\end{enumerate}
+	
+	\subsection{Effect Magnitudes}
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{lcc}
+			\toprule
+			\textbf{Dose Level} & \textbf{Percentage Advantage} & \textbf{Practical Significance} \\
+			\midrule
+			0.5 mg & OJ ? 66\% longer teeth & \textbf{Large effect} \\
+			1.0 mg & OJ ? 35\% longer teeth & \textbf{Medium effect} \\
+			2.0 mg & Essentially identical & \textbf{No practical difference} \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\section{Limitations and Strengths}
+	
+	\subsection{Study Limitations}
+	\begin{itemize}
+		\item \textbf{Small sample sizes:} Only 10 animals per group
+		\item \textbf{Limited dose range:} Only three dose levels tested
+		\item \textbf{Animal model:} Guinea pig results may not directly translate to humans
+	\end{itemize}
+	
+	\subsection{Methodological Strengths}
+	\begin{itemize}
+		\item \textbf{Controlled experiment:} Random assignment to groups
+		\item \textbf{Multiple doses:} Enables dose-response analysis
+		\item \textbf{Proper statistical testing:} Assumptions validated, appropriate methods used
+	\end{itemize}
+	
+	\section{Practical Recommendations}
+	
+	\subsection{Based on Analysis Results}
+	\begin{enumerate}
+		\item \textbf{Cost-effective supplementation:} Use orange juice at lower doses
+		\item \textbf{Maximum effect:} Either method works at 2.0 mg dose
+		\item \textbf{Dose selection:} Consider cost-effectiveness trade-offs
+	\end{enumerate}
+	
+	\subsection{Research Implications}
+	\begin{itemize}
+		\item Natural delivery methods superior for low-dose applications
+		\item Pure compounds may require higher doses for equivalent effects
+		\item Food matrix effects significantly influence nutrient bioavailability
+	\end{itemize}
+	
+	\section*{Final Conclusion}
+	\textbf{Orange Juice is generally MORE effective than pure Vitamin C}, except at the highest dose where they are equally effective. The advantage of orange juice is most pronounced at lower supplementation levels, suggesting that natural delivery methods provide superior bioavailability and effectiveness for vitamin C supplementation in guinea pigs.
+	
+\end{document}

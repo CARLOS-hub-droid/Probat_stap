@@ -1,0 +1,179 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{listings}
+\lstset{
+	language=R,
+	basicstyle=\ttfamily\small,
+	keywordstyle=\color{blue}\bfseries,
+	commentstyle=\color{gray},
+	stringstyle=\color{red},
+	frame=single,
+	breaklines=true,
+	showstringspaces=false
+}
+
+\title{\textbf{Jeu de données \textit{ToothGrowth} -- Description et guide d'analyse}}
+\author{Travail de groupe -- AIMS 2025/26}
+\date{}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Titre}
+	\textbf{L’effet de la vitamine C sur la croissance des dents chez les cobayes}
+	
+	\section*{A. Description (traduction)}
+	La réponse est la longueur des odontoblastes (cellules responsables de la croissance des dents) mesurée chez \textbf{60 cobayes}.  
+	Chaque animal a reçu une des trois doses de vitamine C (0{,}5, 1 et 2 mg/jour) administrées par l’une des deux méthodes suivantes : jus d’orange (\texttt{OJ}) ou acide ascorbique (vitamine C pure, codé \texttt{VC}).
+	
+	\subsection*{Format}
+	Un \textit{data frame} de 60 observations sur 3 variables :
+	\begin{itemize}
+		\item \texttt{len} (numérique) : longueur de la dent (mm) ;
+		\item \texttt{supp} (facteur) : type de supplément (\texttt{VC} ou \texttt{OJ}) ;
+		\item \texttt{dose} (numérique) : dose en mg/jour (0{,}5, 1, 2).
+	\end{itemize}
+	
+	\section*{B. Explication et objectifs possibles}
+	Le jeu de données sert à étudier l'effet de la dose et du type de supplément sur la croissance dentaire. Questions typiques :
+	\begin{itemize}
+		\item La longueur moyenne des dents diffère-t-elle entre les doses ? (effet dose)
+		\item Le type de supplément (\texttt{VC} vs \texttt{OJ}) a-t-il un effet sur la longueur ? (effet supp)
+		\item Existe-t-il une interaction dose × type de supplément ?
+	\end{itemize}
+	
+	\section*{C. Analyse recommandée (structure pour la présentation)}
+	\subsection*{1. Analyse exploratoire (EDA)}
+	\begin{itemize}
+		\item Résumés numériques : \texttt{summary(len)} ; moyennes, médianes, écart-type par groupe (\texttt{aggregate} ou \texttt{tapply}).
+		\item Graphiques : histogrammes de \texttt{len}, boxplots de \texttt{len} selon \texttt{dose} et selon \texttt{supp}, scatter/stripchart si nécessaire.
+		\item Tableaux : tableau croisé des effectifs par dose et supp.
+	\end{itemize}
+	
+	\subsection*{2. Inférence}
+	\begin{itemize}
+		\item Comparaisons de moyennes : tests t (paires) ou ANOVA à un facteur (dose) ; ANOVA à deux facteurs (dose et supp) pour tester interaction.
+		\item Intervalles de confiance pour moyennes de chaque groupe.
+		\item Régression linéaire (modèle avec \texttt{len} comme réponse, \texttt{dose} et \texttt{supp} comme facteurs) pour estimer effets et interactions.
+	\end{itemize}
+	
+	\section*{D. Exemple de code R (à utiliser pour l'analyse)}
+	\begin{lstlisting}
+	%	# Charger les données (dans R les données ToothGrowth sont fournies)
+		data("ToothGrowth")
+		str(ToothGrowth)
+		summary(ToothGrowth)
+		
+	%	# Résumés par groupe
+		aggregate(len ~ supp + dose, data = ToothGrowth, FUN = function(x) c(mean=mean(x), sd=sd(x), n=length(x)))
+		
+		# Graphiques
+		boxplot(len ~ dose, data = ToothGrowth, main="Len selon la dose", xlab="Dose (mg/jour)", ylab="Longueur (mm)")
+		boxplot(len ~ supp, data = ToothGrowth, main="Len selon le supplément", xlab="Supplément", ylab="Longueur (mm)")
+	%	# Boxplot combiné dose x supp
+		interaction.plot(ToothGrowth$dose, ToothGrowth$supp, ToothGrowth$len, type="b", main="Interaction dose x supp", xlab="Dose", ylab="Longueur moyenne")
+		
+	%	# Test d'ANOVA (modèle à deux facteurs avec interaction)
+		ToothGrowth$dose <- factor(ToothGrowth$dose) # traiter dose comme facteur si souhaité
+		mod <- aov(len ~ supp * dose, data = ToothGrowth)
+		summary(mod)
+		
+		# Si dose traitée comme variable numérique (effet linéaire possible)
+		mod2 <- lm(len ~ as.numeric(as.character(dose)) * supp, data = ToothGrowth)
+		summary(mod2)
+		
+        #Tests t : comparaison entre supp à dose = 0.5 par exemple
+		subset05 <- subset(ToothGrowth, dose == 0.5)
+		t.test(len ~ supp, data = subset05)
+		
+		# Intervalles de confiance pour moyennes (ex. pour OJ)
+		library(dplyr)
+		ToothGrowth %>% filter(supp == "OJ") %>% summarise(mean_len = mean(len), sd = sd(len), n=n(), 
+		se = sd/sqrt(n), 
+		ci_low = mean_len - qt(0.975, n-1)*se, 
+		ci_high = mean_len + qt(0.975, n-1)*se)
+	\end{lstlisting}
+	
+	\section*{E. Exemples d'interprétation (à présenter)}
+	\begin{itemize}
+		\item Si l'ANOVA montre un effet significatif de la dose : « la longueur moyenne augmente significativement avec la dose. »
+		\item Si l'effet de \texttt{supp} est significatif : « le type de supplément (OJ vs VC) influence la croissance. »
+		\item Si l'interaction est significative : « l'effet de la dose dépend du type de supplément (par ex. OJ produit une plus grande augmentation à certaines doses). »
+	\end{itemize}
+	
+	\section*{F. Conseils pratiques pour la présentation (12 minutes)}
+	\begin{enumerate}
+		\item 0--2 min : Introduction et description du jeu de données.
+		\item 2--6 min : EDA — graphiques clés et résumés numériques (1--2 figures).
+		\item 6--11 min : Inférence — poser la question principale, méthode choisie, résultats (tableau ou sortie ANOVA / test t), interprétation.
+		\item 11--12 min : Conclusion concise et recommandations (limites de l'étude, perspectives).
+	\end{enumerate}
+	
+	\vspace{0.5cm}
+	\noindent\textbf{Bonne analyse !} Si tu veux, je peux : 
+	\begin{itemize}
+		\item te fournir le code R complet exécuté avec sorties et graphiques (si tu veux un PDF des graphiques), 
+		\item ou convertir ce document en PDF/Beamer pour la présentation.
+	\end{itemize}
+	
+	
+	\section*{Instructions}
+	\begin{itemize}
+		\item À chaque groupe a été attribué un jeu de données différent. Tous les jeux de données comprennent :
+		\begin{itemize}
+			\item au moins une \textbf{variable catégorielle} qui divise les données en deux groupes ou plus ;
+			\item quelques \textbf{variables continues}.
+		\end{itemize}
+		\item Les détails sur votre jeu de données spécifique sont fournis dans la feuille \texttt{DataDescription} du tableur qui vous a été attribué.
+		\item Votre tâche pour la présentation est d'\textbf{analyser les données}. Des orientations sur les questions à traiter sont fournies ci-dessous.
+		\item La présentation doit être divisée en deux parties :
+		\begin{enumerate}
+			\item \textbf{Analyse exploratoire des données (EDA)} : statistiques descriptives du jeu de données.
+			\item \textbf{Inférence} : questions statistiques de votre choix.
+		\end{enumerate}
+		Veillez à relier correctement ces deux parties dans votre présentation.
+	\end{itemize}
+	
+	\section*{Directives générales}
+	Voici quelques lignes directrices sur le type de questions que vous pouvez explorer. Adaptez ou étendez selon votre jeu de données.
+	
+	\subsection*{1. Analyse exploratoire des données (EDA)}
+	\begin{itemize}
+		\item Utilisez à la fois des \textbf{résumés numériques} et des \textbf{résumés graphiques} pour décrire vos données.
+		\item Lorsque vous présentez des résumés numériques, réfléchissez si un \textbf{tableau} ne les rendrait pas plus clairs.
+		\item Si vous créez plusieurs graphiques pour la même variable, mettez-les en relation entre eux et avec les résultats numériques.
+		\item Personnalisez vos graphiques (étiquettes d'axes, taille des polices, couleurs, légendes, etc.). Les graphiques doivent être clairs et informatifs pour l'auditoire.
+	\end{itemize}
+	
+	\subsection*{2. Inférence}
+	\begin{itemize}
+		\item Dans votre présentation, \textbf{énoncez clairement} les questions que vous voulez répondre et justifiez les méthodes choisies.
+		\item Vous pouvez construire des \textbf{intervalles de confiance} pour certains paramètres et comparer les résultats entre groupes si pertinent.
+		\item Les intervalles de confiance s'appliquent aussi aux \textbf{proportions} — vérifiez la pertinence pour votre jeu de données.
+		\item Effectuez des \textbf{tests d'hypothèses} pour comparer des groupes lorsque c'est approprié.
+		\item Si pertinent, explorez les \textbf{relations entre variables numériques} (corrélation, régression linéaire, ...).
+		\item Indiquez les formules utilisées et présentez les résultats ; préparez-vous à les commenter et à expliquer leur sens.
+	\end{itemize}
+	
+	\paragraph{Remarque importante :} Les points ci-dessus sont des suggestions. Les questions les plus pertinentes dépendront de votre jeu de données. N'en faites pas trop : vous disposez de \textbf{12 minutes} pour la présentation — privilégiez la clarté.
+	
+	\section*{Considérations supplémentaires}
+	\begin{itemize}
+		\item Pendant l'EDA, vérifiez si l'une des distributions étudiées convient visuellement à vos données (superposer une densité théorique sur un histogramme).
+		\item Si une distribution semble convenir, complétez le contrôle visuel par un contrôle numérique : comparez quelques percentiles observés avec les percentiles théoriques correspondants.
+	\end{itemize}
+	
+	\section*{Note finale}
+	Privilégiez la clarté et l'interprétation plutôt que la quantité. Une analyse concise et bien raisonnée est plus efficace qu'une présentation surchargée.
+	
+\end{document}
